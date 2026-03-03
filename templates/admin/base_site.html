@@ -1,0 +1,15 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+
+{% block usertools %}
+  <div class="language-switcher-admin" style="margin-right: 10px; display: inline-flex; gap: 4px;">
+    <form action="{% url 'set_language' %}" method="post" style="display:inline;">
+      {% csrf_token %}
+      <input type="hidden" name="next" value="{{ request.get_full_path }}">
+      <button type="submit" name="language" value="ru" class="lang-btn-admin">{% trans "RU" %}</button>
+      <button type="submit" name="language" value="en" class="lang-btn-admin">{% trans "EN" %}</button>
+    </form>
+  </div>
+  {{ block.super }}
+{% endblock %}
+

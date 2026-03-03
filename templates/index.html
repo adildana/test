@@ -1,0 +1,270 @@
+{% load static i18n %}
+<!DOCTYPE html>
+{% get_current_language as CURRENT_LANGUAGE %}
+<html lang="{{ CURRENT_LANGUAGE }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Бронирование комнат отеля</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-top">
+                <h1>
+                    {% if CURRENT_LANGUAGE == 'en' %}
+                        Room booking
+                    {% else %}
+                        Бронирование комнаты
+                    {% endif %}
+                </h1>
+                <form class="language-switcher" action="{% url 'set_language' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.path }}">
+
+                    <select id="currency-select" class="currency-select">
+                        <option value="RUB">RUB</option>
+                        <option value="USD">USD</option>
+                        <option value="EUR">EUR</option>
+                    </select>
+
+                    <button type="submit" name="language" value="ru" class="lang-btn{% if CURRENT_LANGUAGE == 'ru' %} active{% endif %}">RU</button>
+                    <button type="submit" name="language" value="en" class="lang-btn{% if CURRENT_LANGUAGE == 'en' %} active{% endif %}">EN</button>
+                </form>
+            </div>
+        </header>
+
+        <nav class="navbar">
+            <a href="#" class="nav-link active">Поиск</a>
+            <a href="#bookings" class="nav-link" id="bookings-link" style="display: none;">Мои брони</a>
+            <a href="#auth" class="nav-link" id="logout-link" style="display: none;">Выход</a>
+            <a href="#auth" class="nav-link" id="login-link">Вход / Регистрация</a>
+            <!-- админская ссылка открывает тот же модал, но помечает намерение -->
+            <a href="#" class="nav-link" id="admin-link">
+                {% if CURRENT_LANGUAGE == 'en' %}Admin{% else %}Админка{% endif %}
+            </a>
+        </nav>
+
+        <!-- Главный контент -->
+        <main id="main-content">
+            <!-- Блок с поиском и быстрыми ссылками -->
+            <div class="hero-box">
+                <div class="hero-left">
+                    <section class="search-section">
+                        <div class="search-form">
+                            <h2>
+                                {% if CURRENT_LANGUAGE == 'en' %}
+                                    Search available rooms
+                                {% else %}
+                                    Поиск доступных комнат
+                                {% endif %}
+                            </h2>
+                            <form id="search-form">
+                                <div class="form-group">
+                                    <label for="check-in">
+                                        {% if CURRENT_LANGUAGE == 'en' %}
+                                            Check-in date:
+                                        {% else %}
+                                            Дата заезда:
+                                        {% endif %}
+                                    </label>
+                                    <input type="date" id="check-in" name="check_in" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="check-out">
+                                        {% if CURRENT_LANGUAGE == 'en' %}
+                                            Check-out date:
+                                        {% else %}
+                                            Дата выезда:
+                                        {% endif %}
+                                    </label>
+                                    <input type="date" id="check-out" name="check_out" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">
+                                    {% if CURRENT_LANGUAGE == 'en' %}
+                                        Find a room
+                                    {% else %}
+                                        Подобрать комнату
+                                    {% endif %}
+                                </button>
+                            </form>
+                        </div>
+                    </section>
+                </div>
+                <div class="hero-right">
+                    <div id="auth-guest">
+                        <button id="login-button" class="btn btn-primary">
+                            {% if CURRENT_LANGUAGE == 'en' %}
+                                Log in
+                            {% else %}
+                                Войти в систему
+                            {% endif %}
+                        </button>
+                        <button id="register-button" class="btn btn-primary">
+                            {% if CURRENT_LANGUAGE == 'en' %}
+                                Sign up
+                            {% else %}
+                                Зарегистрироваться
+                            {% endif %}
+                        </button>
+                    </div>
+                    <div id="auth-user" style="display: none;">
+                        <p class="user-info">
+                            {% if CURRENT_LANGUAGE == 'en' %}
+                                Signed in as
+                            {% else %}
+                                Вы вошли как
+                            {% endif %}
+                            <span id="user-name"></span>
+                        </p>
+                        <button id="my-bookings-button" class="btn btn-primary">
+                            {% if CURRENT_LANGUAGE == 'en' %}
+                                My bookings
+                            {% else %}
+                                Мои брони
+                            {% endif %}
+                        </button>
+                        <button id="admin-button" class="btn btn-secondary" style="display:none;">
+                            {% if CURRENT_LANGUAGE == 'en' %}
+                                Admin panel
+                            {% else %}
+                                Панель
+                            {% endif %}
+                        </button>
+                        <button id="logout-button" class="btn btn-secondary">
+                            {% if CURRENT_LANGUAGE == 'en' %}
+                                Log out
+                            {% else %}
+                                Выйти
+                            {% endif %}
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Результаты поиска -->
+            <section class="results-section" id="results-section" style="display: none;">
+                <h2 style="color: white;">
+                    {% if CURRENT_LANGUAGE == 'en' %}
+                        Available rooms
+                    {% else %}
+                        Доступные комнаты
+                    {% endif %}
+                </h2>
+                <div class="rooms-grid" id="rooms-grid">
+                    <!-- Комнаты будут загружены сюда -->
+                </div>
+            </section>
+
+            <!-- Сообщение об ошибке -->
+            <div class="error-message" id="error-message" style="display: none;"></div>
+
+            <!-- Сообщение об успехе -->
+            <div class="success-message" id="success-message" style="display: none;"></div>
+        </main>
+
+        <!-- Модальное окно входа/регистрации -->
+        <div id="auth-modal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="login">
+                        {% if CURRENT_LANGUAGE == 'en' %}Log in{% else %}Вход{% endif %}
+                    </button>
+                    <button class="tab-btn" data-tab="register">
+                        {% if CURRENT_LANGUAGE == 'en' %}Sign up{% else %}Регистрация{% endif %}
+                    </button>
+                </div>
+                
+                <div id="login-tab" class="tab-content active">
+                    <form id="login-form">
+                        <input type="text" placeholder="{% if CURRENT_LANGUAGE == 'en' %}Username{% else %}Имя пользователя{% endif %}" required>
+                        <input type="password" placeholder="{% if CURRENT_LANGUAGE == 'en' %}Password{% else %}Пароль{% endif %}" required>
+                        <button type="submit" class="btn btn-primary">
+                            {% if CURRENT_LANGUAGE == 'en' %}Log in{% else %}Вход{% endif %}
+                        </button>
+                    </form>
+                </div>
+
+                <div id="register-tab" class="tab-content">
+                    <form id="register-form">
+                        <input type="text" placeholder="{% if CURRENT_LANGUAGE == 'en' %}Username{% else %}Имя пользователя{% endif %}" required>
+                        <input type="email" placeholder="Email" required>
+                        <input type="password" placeholder="{% if CURRENT_LANGUAGE == 'en' %}Password{% else %}Пароль{% endif %}" required>
+                        <input type="password" placeholder="{% if CURRENT_LANGUAGE == 'en' %}Repeat password{% else %}Повторите пароль{% endif %}" required>
+                        <button type="submit" class="btn btn-primary">
+                            {% if CURRENT_LANGUAGE == 'en' %}Sign up{% else %}Регистрация{% endif %}
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Модальное окно бронирования -->
+        <div id="booking-modal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>
+                    {% if CURRENT_LANGUAGE == 'en' %}
+                        Booking confirmation
+                    {% else %}
+                        Подтверждение бронирования
+                    {% endif %}
+                </h2>
+                <div id="booking-details"></div>
+                <button id="confirm-booking" class="btn btn-primary">
+                    {% if CURRENT_LANGUAGE == 'en' %}Book{% else %}Забронировать{% endif %}
+                </button>
+                <button class="btn btn-secondary close-modal">
+                    {% if CURRENT_LANGUAGE == 'en' %}Cancel{% else %}Отмена{% endif %}
+                </button>
+            </div>
+        </div>
+
+        <!-- Мои брони (оформление как главная страница) -->
+        <section id="bookings-section" style="display: none;">
+            <div class="bookings-hero-box">
+                <div class="bookings-hero-left">
+                    <h2 class="bookings-title">
+                        {% if CURRENT_LANGUAGE == 'en' %}
+                            My bookings
+                        {% else %}
+                            Мои брони
+                        {% endif %}
+                    </h2>
+                    <div class="bookings-list" id="bookings-list">
+                        <!-- Брони будут загружены сюда -->
+                    </div>
+                </div>
+                <div class="bookings-hero-right">
+                    <p class="user-info">
+                        {% if CURRENT_LANGUAGE == 'en' %}
+                            Signed in as
+                        {% else %}
+                            Вы вошли как
+                        {% endif %}
+                        <span id="bookings-user-name"></span>
+                    </p>
+                    <button id="back-to-search-button" class="btn btn-primary">
+                        {% if CURRENT_LANGUAGE == 'en' %}
+                            Back to search
+                        {% else %}
+                            Вернуться к поиску
+                        {% endif %}
+                    </button>
+                    <button id="logout-button-bookings" class="btn btn-secondary">
+                        {% if CURRENT_LANGUAGE == 'en' %}
+                            Log out
+                        {% else %}
+                            Выйти
+                        {% endif %}
+                    </button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script src="{% static 'js/app.js' %}"></script>
+</body>
+</html>

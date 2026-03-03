@@ -1,0 +1,396 @@
+[
+{
+  "model": "auth.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$cvB0LxfurljNj31AVKS8qo$UNDXFZylOuGDfhxIU0mi9JJW9Q3QqGR3daRrDk9WI/E=",
+    "last_login": "2026-02-28T10:08:57.002Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-02-28T10:08:37.020Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$wvSpZfj3x0DZ0X4QqkHSeX$HuI1rdM7R7RC1SYlzR3jgmhxfhMTFMQoWvVYFVRnZEA=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "Dana",
+    "first_name": "",
+    "last_name": "",
+    "email": "adildana10@gmail.com",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-03-02T06:08:13.760Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "x7ex7gx4esc7l4xu1v3pqe9oc5vt39r5",
+  "fields": {
+    "session_data": ".eJxVjMsKwjAQAP9lzxK6edCkR-9-Q9jNJqYqKTTtSfx3KfSg15lh3hBp32rce17jLDABwuWXMaVnboeQB7X7otLStnVmdSTqtF3dFsmv69n-DSr1ChNoKsYnEjOEEljYFKQ0Wo3IbBxicLmISB7JBbJYiteetNgcggwoBj5fCHQ4uQ:1vwHFp:ZUBP3kga3lVWCxu9MgmtRgKinb16nKbqM1xmHcjkxQE",
+    "expire_date": "2026-03-14T10:08:57.009Z"
+  }
+},
+{
+  "model": "rooms.room",
+  "pk": 1,
+  "fields": {
+    "name": "101",
+    "price_per_day": "2500.00",
+    "currency": "RUB",
+    "capacity": 2,
+    "created_at": "2026-03-02T07:09:30.780Z",
+    "updated_at": "2026-03-02T08:54:56.539Z"
+  }
+},
+{
+  "model": "rooms.room",
+  "pk": 2,
+  "fields": {
+    "name": "102",
+    "price_per_day": "2500.00",
+    "currency": "RUB",
+    "capacity": 2,
+    "created_at": "2026-03-02T07:09:30.782Z",
+    "updated_at": "2026-03-02T08:55:08.183Z"
+  }
+},
+{
+  "model": "rooms.room",
+  "pk": 3,
+  "fields": {
+    "name": "201",
+    "price_per_day": "4000.00",
+    "currency": "RUB",
+    "capacity": 2,
+    "created_at": "2026-03-02T07:09:30.783Z",
+    "updated_at": "2026-03-02T08:55:21.029Z"
+  }
+},
+{
+  "model": "rooms.room",
+  "pk": 4,
+  "fields": {
+    "name": "202",
+    "price_per_day": "4000.00",
+    "currency": "RUB",
+    "capacity": 3,
+    "created_at": "2026-03-02T07:09:30.783Z",
+    "updated_at": "2026-03-02T08:55:27.867Z"
+  }
+},
+{
+  "model": "rooms.room",
+  "pk": 5,
+  "fields": {
+    "name": "203",
+    "price_per_day": "5500.00",
+    "currency": "RUB",
+    "capacity": 3,
+    "created_at": "2026-03-02T07:09:30.784Z",
+    "updated_at": "2026-03-02T08:55:34.991Z"
+  }
+},
+{
+  "model": "rooms.room",
+  "pk": 6,
+  "fields": {
+    "name": "301",
+    "price_per_day": "7500.00",
+    "currency": "RUB",
+    "capacity": 2,
+    "created_at": "2026-03-02T07:09:30.785Z",
+    "updated_at": "2026-03-02T08:55:41.768Z"
+  }
+},
+{
+  "model": "rooms.room",
+  "pk": 7,
+  "fields": {
+    "name": "302",
+    "price_per_day": "7500.00",
+    "currency": "RUB",
+    "capacity": 4,
+    "created_at": "2026-03-02T07:09:30.785Z",
+    "updated_at": "2026-03-02T08:55:47.095Z"
+  }
+},
+{
+  "model": "rooms.room",
+  "pk": 8,
+  "fields": {
+    "name": "401",
+    "price_per_day": "6000.00",
+    "currency": "RUB",
+    "capacity": 3,
+    "created_at": "2026-03-02T07:09:30.786Z",
+    "updated_at": "2026-03-02T08:55:54.611Z"
+  }
+},
+{
+  "model": "rooms.room",
+  "pk": 9,
+  "fields": {
+    "name": "402",
+    "price_per_day": "6000.00",
+    "currency": "RUB",
+    "capacity": 4,
+    "created_at": "2026-03-02T07:09:30.786Z",
+    "updated_at": "2026-03-02T08:56:00.941Z"
+  }
+},
+{
+  "model": "rooms.room",
+  "pk": 10,
+  "fields": {
+    "name": "501",
+    "price_per_day": "12000.00",
+    "currency": "RUB",
+    "capacity": 4,
+    "created_at": "2026-03-02T07:09:30.787Z",
+    "updated_at": "2026-03-02T08:56:07.257Z"
+  }
+},
+{
+  "model": "bookings.booking",
+  "pk": 1,
+  "fields": {
+    "room": 1,
+    "user": [
+      "Dana"
+    ],
+    "check_in": "2026-03-02",
+    "check_out": "2026-03-03",
+    "status": "active",
+    "cancelled_by": null,
+    "created_at": "2026-03-02T08:31:41.150Z",
+    "updated_at": "2026-03-02T08:31:41.150Z"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 1,
+  "fields": {
+    "action_time": "2026-03-02T08:10:04.831Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "rooms",
+      "room"
+    ],
+    "object_id": "11",
+    "object_repr": "101 (1 ьхёЄ)",
+    "action_flag": 1,
+    "change_message": "[{\"added\": {}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 2,
+  "fields": {
+    "action_time": "2026-03-02T08:10:35.724Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "rooms",
+      "room"
+    ],
+    "object_id": "11",
+    "object_repr": "101 (1 ьхёЄ)",
+    "action_flag": 3,
+    "change_message": ""
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 3,
+  "fields": {
+    "action_time": "2026-03-02T08:54:56.540Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "rooms",
+      "room"
+    ],
+    "object_id": "1",
+    "object_repr": "101 (2 ьхёЄ)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"\\u041d\\u043e\\u043c\\u0435\\u0440/\\u043d\\u0430\\u0437\\u0432\\u0430\\u043d\\u0438\\u0435\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 4,
+  "fields": {
+    "action_time": "2026-03-02T08:55:08.185Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "rooms",
+      "room"
+    ],
+    "object_id": "2",
+    "object_repr": "102 (2 ьхёЄ)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"\\u041d\\u043e\\u043c\\u0435\\u0440/\\u043d\\u0430\\u0437\\u0432\\u0430\\u043d\\u0438\\u0435\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 5,
+  "fields": {
+    "action_time": "2026-03-02T08:55:21.030Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "rooms",
+      "room"
+    ],
+    "object_id": "3",
+    "object_repr": "201 (2 ьхёЄ)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"\\u041d\\u043e\\u043c\\u0435\\u0440/\\u043d\\u0430\\u0437\\u0432\\u0430\\u043d\\u0438\\u0435\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 6,
+  "fields": {
+    "action_time": "2026-03-02T08:55:27.868Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "rooms",
+      "room"
+    ],
+    "object_id": "4",
+    "object_repr": "202 (3 ьхёЄ)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"\\u041d\\u043e\\u043c\\u0435\\u0440/\\u043d\\u0430\\u0437\\u0432\\u0430\\u043d\\u0438\\u0435\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 7,
+  "fields": {
+    "action_time": "2026-03-02T08:55:34.992Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "rooms",
+      "room"
+    ],
+    "object_id": "5",
+    "object_repr": "203 (3 ьхёЄ)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"\\u041d\\u043e\\u043c\\u0435\\u0440/\\u043d\\u0430\\u0437\\u0432\\u0430\\u043d\\u0438\\u0435\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 8,
+  "fields": {
+    "action_time": "2026-03-02T08:55:41.769Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "rooms",
+      "room"
+    ],
+    "object_id": "6",
+    "object_repr": "301 (2 ьхёЄ)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"\\u041d\\u043e\\u043c\\u0435\\u0440/\\u043d\\u0430\\u0437\\u0432\\u0430\\u043d\\u0438\\u0435\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 9,
+  "fields": {
+    "action_time": "2026-03-02T08:55:47.097Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "rooms",
+      "room"
+    ],
+    "object_id": "7",
+    "object_repr": "302 (4 ьхёЄ)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"\\u041d\\u043e\\u043c\\u0435\\u0440/\\u043d\\u0430\\u0437\\u0432\\u0430\\u043d\\u0438\\u0435\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 10,
+  "fields": {
+    "action_time": "2026-03-02T08:55:54.613Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "rooms",
+      "room"
+    ],
+    "object_id": "8",
+    "object_repr": "401 (3 ьхёЄ)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"\\u041d\\u043e\\u043c\\u0435\\u0440/\\u043d\\u0430\\u0437\\u0432\\u0430\\u043d\\u0438\\u0435\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 11,
+  "fields": {
+    "action_time": "2026-03-02T08:56:00.948Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "rooms",
+      "room"
+    ],
+    "object_id": "9",
+    "object_repr": "402 (4 ьхёЄ)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"\\u041d\\u043e\\u043c\\u0435\\u0440/\\u043d\\u0430\\u0437\\u0432\\u0430\\u043d\\u0438\\u0435\"]}}]"
+  }
+},
+{
+  "model": "admin.logentry",
+  "pk": 12,
+  "fields": {
+    "action_time": "2026-03-02T08:56:07.258Z",
+    "user": [
+      "admin"
+    ],
+    "content_type": [
+      "rooms",
+      "room"
+    ],
+    "object_id": "10",
+    "object_repr": "501 (4 ьхёЄ)",
+    "action_flag": 2,
+    "change_message": "[{\"changed\": {\"fields\": [\"\\u041d\\u043e\\u043c\\u0435\\u0440/\\u043d\\u0430\\u0437\\u0432\\u0430\\u043d\\u0438\\u0435\"]}}]"
+  }
+}
+]
