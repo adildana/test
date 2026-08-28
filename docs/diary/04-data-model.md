@@ -307,7 +307,107 @@ erDiagram
 | happened_at | datetime | По умолчанию — момент создания, редактируется |
 | is_pinned | bool | |
 
-## 5.5 Общие правила валидации
+## 5.5 Сквозные сущности
+
+Обслуживают разделы [09-cross-cutting.md](09-cross-cutting.md) и технические решения из
+[11-architecture.md](11-architecture.md). На диаграмме 5.1 они не показаны, чтобы не
+перегружать её: все они связаны с пользователем напрямую либо ссылаются на уже описанные
+сущности.
+
+### USER_SETTINGS
+
+| Поле | Тип | Примечание |
+| --- | --- | --- |
+| user_id | fk | Одна запись на пользователя |
+| locale | string | `ru`, `en` |
+| timezone | string | IANA; определяет расчёт напоминаний (NFR-64) |
+| primary_currency | char(3) | Валюта по умолчанию для вишлиста |
+| theme | enum | `light` / `dark` / `system` |
+| default_style_set_id | fk → STYLE_SET | Набор стилей для новых записей |
+| toolbar_expanded | bool | Состояние выдвижной панели (ED-22) |
+| details_expanded | bool | Состояние блоков «Подробнее» (PPL-11, WL-06) |
+| notification_channels | enum[] | Каналы по умолчанию (PPL-61) |
+| default_reminder_rules | json | Значения по умолчанию для новых дат: отдельно для ДР и прочих (PPL-56) |
+| quiet_hours | json | `{from, to}` — «не беспокоить» (PPL-64) |
+| app_lock_enabled | bool | Блокировка кодом (NFR-04) |
+| allow_external_requests | bool | Разрешение на запросы вида «заполнить по ссылке» (WL-10, NFR-07) |
+| storage_used_bytes | int | Кеш для показа квоты (SET-05) |
+| export_defaults | json | Настройки экспорта PDF, запоминаемые между вызовами (WL-24) |
+
+### TAG и связи
+
+| TAG | Тип | Примечание |
+| --- | --- | --- |
+| id | uuid | |
+| name | string(60) | Нормализованное значение: нижний регистр, без крайних пробелов (TAG-04) |
+| display_name | string(60) | Как ввёл пользователь |
+| color | hex | Nullable (TAG-05) |
+
+Связь с объектами — таблица `TAG_LINK(tag_id, object_type, object_id)` с уникальным ключом
+по тройке. Переименование тега меняет только `TAG`, поэтому применяется везде сразу (TAG-02).
+
+### ENTRY_VERSION
+
+| Поле | Тип | Примечание |
+| --- | --- | --- |
+| id | uuid | |
+| entry_id | fk | |
+| revision | int | Возрастает монотонно |
+| body | json | Полный снимок документа |
+| created_reason | enum | `autosave`, `manual`, `conflict`, `restore` |
+
+Хранятся последние 50 версий записи и все версии, созданные из конфликта синхронизации
+(NFR-32); остальные прореживаются: по одной за час за последние сутки, далее по одной в день.
+
+### SAVED_SEARCH
+
+| Поле | Тип | Примечание |
+| --- | --- | --- |
+| id | uuid | |
+| name | string(120) | |
+| query | string(200) | |
+| filters | json | Тип объекта, период, теги, категория (SRCH-03) |
+| is_pinned | bool | Закреплён в меню (SRCH-08) |
+
+### DEVICE
+
+| Поле | Тип | Примечание |
+| --- | --- | --- |
+| id | uuid | |
+| kind | enum | `web`, `android`, `ios`, `desktop` |
+| push_endpoint | text | Данные подписки Web Push |
+| push_keys | json | Ключи подписки |
+| last_seen_at | datetime | |
+| is_active | bool | Отключается при отказе доставки |
+
+### EXPORT_JOB
+
+| Поле | Тип | Примечание |
+| --- | --- | --- |
+| id | uuid | |
+| kind | enum | `wishlist_pdf`, `entry`, `full_data`, `ics` |
+| params | json | Настройки экспорта (13.6) |
+| status | enum | `queued`, `running`, `done`, `failed` |
+| progress | json | `{done, total}` |
+| file_path | string | Nullable до завершения |
+| expires_at | datetime | Срок жизни ссылки на файл |
+| warnings | string[] | Например, о подстановке шрифта |
+
+### NOTIFICATION — уведомление, показываемое пользователю
+
+Отличается от `NOTIFICATION_LOG` (5.4): журнал фиксирует факт отправки, а эта сущность —
+то, что пользователь видит в списке уведомлений.
+
+| Поле | Тип | Примечание |
+| --- | --- | --- |
+| id | uuid | |
+| source_log_id | fk → NOTIFICATION_LOG | Nullable для системных сообщений |
+| title / body | text | Готовый текст (11.4) |
+| payload | json | Ссылки на человека, дату, позиции вишлиста для подсказок (PPL-59) |
+| read_at | datetime | Nullable |
+| snoozed_until | datetime | Nullable (PPL-60) |
+
+## 5.6 Общие правила валидации
 
 | Правило | Область |
 | --- | --- |
