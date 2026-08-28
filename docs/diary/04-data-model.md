@@ -407,7 +407,57 @@ erDiagram
 | read_at | datetime | Nullable |
 | snoozed_until | datetime | Nullable (PPL-60) |
 
-## 5.6 Общие правила валидации
+## 5.6 Музыка
+
+Обслуживает модуль [15-music.md](15-music.md). Аудио и видео не хранятся — только ссылки и
+метаданные (MUS-43).
+
+### MUSIC_DISC
+
+| Поле | Тип | Примечание |
+| --- | --- | --- |
+| id | uuid | |
+| owner_type / owner_id | polymorphic | `entry`, `person`, `standalone` (раздел «Музыка») |
+| title | string(200) | Название диска; для диска записи может быть пустым |
+| cover_attachment_id | fk → ATTACHMENT | Nullable; по умолчанию берётся обложка первого трека |
+| playback_mode | enum | `sequential`, `repeat_one`, `repeat_all`, `shuffle` (MUS-05) |
+| autoplay | bool | Автозапуск при открытии владельца; на мобильных игнорируется (MUS-10, MUS-60) |
+| current_track_id | fk → MUSIC_TRACK | Последний воспроизводившийся трек (MUS-11) |
+
+Ограничение: у одного владельца типа `entry` или `person` — не более одного диска.
+
+### MUSIC_TRACK
+
+| Поле | Тип | Примечание |
+| --- | --- | --- |
+| id | uuid | |
+| disc_id | fk | |
+| source | enum | `youtube`; поле заведено под расширение источников (MUS-44) |
+| source_url | text | Исходная ссылка как ввёл пользователь (MUS-34) |
+| external_id | string(40) | `video_id` YouTube |
+| title / artist | string(200) | Автоматически по oEmbed, редактируются вручную (MUS-03, MUS-35) |
+| thumbnail_path | string | Обложка, закешированная на своей стороне (MUS-53) |
+| duration_seconds | int | Nullable — доступна только при использовании Data API (Q20) |
+| start_seconds / end_seconds | int | Фрагмент трека (MUS-12) |
+| position_seconds | int | Запомненная позиция воспроизведения (MUS-11) |
+| availability | enum | `ok`, `removed`, `private`, `embedding_denied`, `region_blocked`, `age_restricted`, `unknown` (MUS-31) |
+| availability_checked_at | datetime | Отметка последней фоновой проверки (MUS-33) |
+| position | int | Порядок в диске |
+
+Ограничение: `unique(disc_id, external_id, start_seconds)` — один и тот же фрагмент не
+добавляется в диск дважды.
+
+### Настройки музыки
+
+Хранятся в `USER_SETTINGS` (5.5), потому что относятся к пользователю, а не к диску:
+
+| Поле | Тип | Примечание |
+| --- | --- | --- |
+| music_widget_enabled | bool | Согласие на работу виджета; по умолчанию `false` (MUS-50) |
+| music_consent_at | datetime | Когда дано согласие; сбрасывается при отзыве (MUS-51) |
+| music_volume | int | 0…100, общий для всех дисков |
+
+## 5.7 Общие правила валидации
 
 | Правило | Область |
 | --- | --- |
@@ -418,5 +468,6 @@ erDiagram
 | Шрифты: `woff2`, `woff`, `ttf`, `otf`; до 5 МБ на файл, 50 МБ на пользователя; структура проверяется парсером | Шрифты |
 | Дата окончания не раньше даты начала | Шаблон книги, диапазоны дат |
 | Цена ≥ 0; `price_amount_max` ≥ `price_amount` | Вишлист |
-| Удаление сущности с потомками (категория, шаблон, вишлист, шрифт) требует явного выбора действия | Все модули |
+| Ссылки на музыку: только домены YouTube (`youtube.com`, `youtu.be`, `music.youtube.com`), схема `https`; распознаётся `video_id` или `list` | Музыка (MUS-36) |
+| Удаление сущности с потомками (категория, шаблон, вишлист, шрифт, диск) требует явного выбора действия | Все модули |
 | Мягкое удаление и корзина на 30 дней для записей, людей и позиций вишлиста | Все модули |

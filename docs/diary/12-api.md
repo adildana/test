@@ -314,7 +314,83 @@ POST /api/v1/dates/{id}/reminders/preview/
 }
 ```
 
-## 13.9 Сквозные разделы
+## 13.9 Музыка
+
+| Метод | Путь | Описание |
+| --- | --- | --- |
+| `GET` | `/api/v1/discs/` | Самостоятельные диски раздела «Музыка» (MUS-23) |
+| `POST` | `/api/v1/discs/` | Создание диска; `owner_type` = `entry` \| `person` \| `standalone` |
+| `GET` | `/api/v1/discs/{id}/` | Диск с треками и их доступностью |
+| `PATCH` | `/api/v1/discs/{id}/` | Название, обложка, режим воспроизведения, автозапуск |
+| `DELETE` | `/api/v1/discs/{id}/` | Удаление диска (запись и человек не затрагиваются) |
+| `POST` | `/api/v1/discs/{id}/tracks/` | Добавление трека по ссылке |
+| `PATCH` | `/api/v1/tracks/{id}/` | Название, исполнитель, фрагмент, запомненная позиция |
+| `DELETE` | `/api/v1/tracks/{id}/` | Удаление трека |
+| `POST` | `/api/v1/discs/{id}/tracks/reorder/` | Порядок треков (MUS-04) |
+| `POST` | `/api/v1/music/resolve/` | Разбор ссылки и метаданные без сохранения (MUS-30) |
+| `POST` | `/api/v1/music/consent/` | Включение музыкального виджета (MUS-50) |
+| `DELETE` | `/api/v1/music/consent/` | Отзыв согласия; диски сохраняются как списки ссылок (MUS-51) |
+
+Разбор ссылки выполняется на сервере, чтобы клиент, мини-плеер и экспорт работали с одним
+результатом:
+
+```json
+POST /api/v1/music/resolve/
+{ "input": "https://youtu.be/kfLuuLLLtiY?t=95" }
+
+200 OK
+{
+  "source": "youtube",
+  "external_id": "kfLuuLLLtiY",
+  "title": "Nuvole Bianche",
+  "artist": "Ludovico Einaudi",
+  "thumbnail_url": "https://…/cached/kfLuuLLLtiY.webp",
+  "start_seconds": 95,
+  "availability": "ok",
+  "embed_url": "https://www.youtube-nocookie.com/embed/kfLuuLLLtiY"
+}
+```
+
+Недоступное видео — не ошибка запроса: трек всё равно можно сохранить, чтобы не потерять
+ссылку (MUS-34). Причина недоступности возвращается полем `availability`, а текст для
+пользователя берётся из 16.9:
+
+```json
+200 OK
+{
+  "source": "youtube",
+  "external_id": "abc123",
+  "title": null,
+  "availability": "embedding_denied",
+  "message": "Автор запретил воспроизведение вне YouTube",
+  "source_url": "https://www.youtube.com/watch?v=abc123"
+}
+```
+
+Ссылка на плейлист возвращает список треков и сводку по недоступным:
+
+```json
+POST /api/v1/music/resolve/
+{ "input": "https://www.youtube.com/playlist?list=PLxxxx" }
+
+200 OK
+{
+  "kind": "playlist",
+  "tracks": [],
+  "total": 15,
+  "unavailable": 3
+}
+```
+
+Попытка обратиться к музыкальным эндпоинтам без согласия (MUS-50):
+
+```json
+403 Forbidden
+{ "error": { "code": "forbidden",
+             "message": "Музыкальный виджет отключён в настройках приватности" } }
+```
+
+## 13.10 Сквозные разделы
 
 | Метод | Путь | Описание |
 | --- | --- | --- |
